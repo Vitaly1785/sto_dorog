@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<databaseChangeLog xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog">
+    <changeSet id="create_table_news" author="v.petukhov">
+        <createTable tableName="news">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="anons" type="VARCHAR(255)"/>
+            <column name="full_text" type="VARCHAR(1380)"/>
+            <column name="views" type="INT(11)"/>
+            <column defaultValueComputed="NOW()" name="time" type="DATETIME WITH TIMEZONE(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="createNewsItem" author="v.petukhov">
+        <insert tableName="news">
+            <column name="title" value="Главная новость"/>
+            <column name="anons" value="Египет будет платить деньги за российских туристов, прилетающих в Хургаду и Шарм-эль-Шейх"/>
+            <column name="full_text" value="За каждого привезенного туриста на курорты Египта - в аэропорт Хургады или Шарм-эль-Шейха, египетское правительство будет выплачивать субсидии туроператорам, организовавшим соответствующий чартер. Программа запускается явно под открытие Россией прямых рейсов на курорты Египта, и нацелена на стимуляцию продаж для увеличения турпотока. Субсидии будут выплачиваться в период с мая по 31 октября 2021 года для рейсов, прилетающих в любой из 9 аэропортов Египта."/>
+            <column name="views" value="0"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
