@@ -19,6 +19,7 @@
     <div th:each="newsItem : ${news}" class="alert alert-info mt-2">
         <h3 th:text="${newsItem.title}"/>
         <p th:text="${newsItem.anons}"/>
+        <p th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}"/>
         <a th:href="'/news/' + ${newsItem.id}" class="btn btn-warning">Подробнее</a>
     </div>
 </div>

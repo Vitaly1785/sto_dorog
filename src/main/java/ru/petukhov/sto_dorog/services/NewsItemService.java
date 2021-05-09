@@ -10,4 +10,5 @@ public interface NewsItemService {
     NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id);
     void deleteNewsItem(Long id);
     boolean findNewsItem(Long id);
+    void setViewsNewsItem(Long id);
 }

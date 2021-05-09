@@ -28,6 +28,7 @@ public class NewsItemController {
             return "/news";
         }
         model.addAttribute("newsItem", newsItemService.findById(id));
+        newsItemService.setViewsNewsItem(id);
         return "/newsItem";
     }
 

@@ -3,7 +3,6 @@ package ru.petukhov.sto_dorog.dto;
 public class NewsItemDto {
     private String title, anons, fullText;
 
-
     public String getTitle() {
         return title;
     }

@@ -26,8 +26,6 @@ public class NewsItemServiceImpl implements NewsItemService{
     public NewsItem findById(Long id) {
       NewsItem newsItem = newsItemRepository.findById(id).orElseThrow(()-> new NewsItemNotFoundException(String.format("NewsItem with %s id not found", id)));
       int count = newsItem.getViews();
-      newsItem.setViews(++count);
-      newsItemRepository.save(newsItem);
       return newsItem;
     }
 
@@ -38,6 +36,7 @@ public class NewsItemServiceImpl implements NewsItemService{
         newsItem.setAnons(newsItemDto.getAnons());
         newsItem.setFullText(newsItemDto.getFullText());
         newsItem.setTime(LocalDateTime.now());
+        newsItem.setStr("Добавлено: ");
         newsItemRepository.save(newsItem);
         return newsItem;
     }
@@ -49,6 +48,7 @@ public class NewsItemServiceImpl implements NewsItemService{
         newsItem.setAnons(newsItemDto.getAnons());
         newsItem.setFullText(newsItemDto.getFullText());
         newsItem.setTime(LocalDateTime.now());
+        newsItem.setStr("Изменено: ");
         newsItemRepository.save(newsItem);
         return newsItem;
     }
@@ -61,5 +61,13 @@ public class NewsItemServiceImpl implements NewsItemService{
     @Override
     public boolean findNewsItem(Long id){
         return newsItemRepository.existsById(id);
+    }
+
+    @Override
+    public void setViewsNewsItem(Long id) {
+        NewsItem newsItem = findById(id);
+        int count = newsItem.getViews();
+        newsItem.setViews(++count);
+        newsItemRepository.save(newsItem);
     }
 }

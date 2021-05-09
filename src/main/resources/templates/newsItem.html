@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:Добавлено="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Новости</title>
@@ -18,10 +18,10 @@
         <h1 th:text="${newsItem.title}"></h1>
         <p th:text="${newsItem.fullText}"></p>
         <p><b>Просмотры: </b><span th:text="${newsItem.views}"/></p>
-        <p><b>Добавлено: </b><span th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}"/></p>
-        <a th:href="'/news/' + ${newsItem.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
+        <p><b th:text="${newsItem.str}"></b><span th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}"/></p>
+        <a th:href="@{/news/{id}/edit(id=${newsItem.getId()})}" class="btn btn-warning">Редактировать</a><br><br>
         <form th:method="DELETE" th:action="@{/news/{id}(id=${newsItem.getId()})}">
-            <input class="btn btn-warning" type="submit" value="Удалить">
+            <input class="btn btn-danger" type="submit" value="Удалить">
         </form>
     </div>
 </div>

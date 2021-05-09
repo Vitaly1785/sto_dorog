@@ -1,8 +1,6 @@
 package ru.petukhov.sto_dorog.entities;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,6 +18,15 @@ public class NewsItem {
 
     private int views;
     private LocalDateTime time;
+    private String str;
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
 
     public LocalDateTime getTime() {
         return time;

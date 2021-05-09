@@ -23,4 +23,9 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
             <column name="views" value="0"/>
         </insert>
     </changeSet>
+    <changeSet id="addColumnStr" author="v.petukhov">
+        <addColumn tableName="news">
+            <column name="str" type="VARCHAR(16)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
