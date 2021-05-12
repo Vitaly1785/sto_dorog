@@ -7,3 +7,7 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:db.changelog/liquibase-changelog.xml
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
