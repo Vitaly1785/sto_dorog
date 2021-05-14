@@ -13,7 +13,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
             .authorizeRequests()
-                .antMatchers("/persons").hasAnyRole("SUPER-ADMIN")
+                .antMatchers("/news/add").hasAnyRole("SUPER-ADMIN", "USER", "ADMIN")
+                .antMatchers("/persons/admin-panel").hasAnyRole("SUPER-ADMIN", "ADMIN")
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()

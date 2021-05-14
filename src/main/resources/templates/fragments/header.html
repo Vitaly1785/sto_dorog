@@ -1,4 +1,4 @@
-<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
@@ -19,7 +19,7 @@
                             <a class="nav-link" href="/contacts">Контакты</a>
                         </li>
                         <li sec:authorize="hasRole('SUPER-ADMIN')" class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/persons">Пользователи</a>
+                            <a class="nav-link active" aria-current="page" href="/persons/admin-panel">Пользователи</a>
                         </li>
                         <li sec:authorize="isAnonymous()" class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/persons/add">Регистрация</a>
@@ -28,7 +28,7 @@
                             <a class="nav-link active" aria-current="page" href="/persons/login">Вход</a>
                         </li>
                         <li sec:authorize="isAuthenticated()" class="nav-item">
-                            <a class="nav-link active" aria-current="page" sec:authentication="principal.username"></a>
+                            <a class="nav-link blue" aria-current="page" sec:authentication="principal.username" th:href="@{/persons/{login}(login=${#authentication.name})}"></a>
                         </li>
                         <li sec:authorize="isAuthenticated()" class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/persons/logout">Выйти</a>

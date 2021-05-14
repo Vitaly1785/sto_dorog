@@ -7,7 +7,7 @@ import ru.petukhov.sto_dorog.dto.PersonDto;
 import ru.petukhov.sto_dorog.entities.Person;
 import ru.petukhov.sto_dorog.services.PersonService;
 
-import java.security.Principal;
+
 
 @Controller
 @RequestMapping("/persons")
@@ -19,17 +19,28 @@ public class PersonsController {
         this.personService = personService;
     }
 
-    @GetMapping
+    @GetMapping("/admin-panel")
     public String showAllPersons(Model model){
+        model.addAttribute("persons", personService.findAll());
+        return "/personsAdmin";
+    }
+    @GetMapping
+    public String showPersons(Model model){
         model.addAttribute("persons", personService.findAll());
         return "/persons";
     }
 
-    @GetMapping("/{id}")
-    public String showPerson(@PathVariable Long id, Model model){
-        model.addAttribute("person", personService.findById(id));
+//    @GetMapping("/{id}")
+//    public String showPerson(@PathVariable Long id, Model model){
+//        model.addAttribute("person", personService.findById(id));
+//        return "/showPerson";
+//    }
+    @GetMapping("/{login}")
+    public String showPersonByLogin(Model model, @PathVariable String login){
+        model.addAttribute("person", personService.findByLogin(login));
         return "/showPerson";
     }
+
 
     @GetMapping("/add")
     public String addPerson(Model model){
@@ -40,7 +51,7 @@ public class PersonsController {
     @PostMapping
     public String createPerson(@ModelAttribute("newPerson")PersonDto personDto){
         personService.createPerson(personDto);
-        return "redirect:/";
+        return "redirect:/news";
     }
 
     @GetMapping("/{id}/edit")
@@ -52,13 +63,13 @@ public class PersonsController {
     @PatchMapping("/{id}")
     public String updatePerson(@ModelAttribute("editPerson") PersonDto personDto, @PathVariable Long id){
         personService.updatePerson(personDto, id);
-        return "redirect:/persons";
+        return "redirect:/news";
     }
 
     @DeleteMapping("/{id}")
     public String deletePerson(@PathVariable Long id){
         personService.deletePerson(id);
-        return "redirect:/";
+        return "redirect:/news";
     }
 
     @GetMapping("/login")

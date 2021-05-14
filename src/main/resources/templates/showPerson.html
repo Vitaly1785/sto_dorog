@@ -15,11 +15,11 @@
 <div class="container mt-5">
     <br>
     <div class="card text-dark bg-info mb-3">
-        <p th:text="${person.id}"></p>
-        <p th:text="${person.firstName}"></p>
-        <p th:text="${person.lastName}"></p>
-        <p th:text="${person.email}"></p>
-        <p th:text="${person.login}"></p>
+        <p><b>ID: </b><span th:text="${person.id}"/></p>
+        <p><b>Имя: </b><span th:text="${person.firstName}"/></p>
+        <p><b>Фамилия: </b><span th:text="${person.lastName}"/></p>
+        <p><b>Email: </b><span th:text="${person.email}"/></p>
+        <p><b>Логин: </b><span th:text="${person.login}"/></p>
         <a th:href="@{/persons/{id}/edit(id=${person.getId()})}" class="btn btn-warning">Редактировать</a><br><br>
         <form th:method="DELETE" th:action="@{/persons/{id}(id=${person.getId()})}">
             <input class="btn btn-danger" type="submit" value="Удалить">
