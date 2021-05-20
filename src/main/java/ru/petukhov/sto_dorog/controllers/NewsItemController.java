@@ -1,5 +1,8 @@
 package ru.petukhov.sto_dorog.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,9 +10,12 @@ import ru.petukhov.sto_dorog.dto.NewsItemDto;
 import ru.petukhov.sto_dorog.entities.NewsItem;
 import ru.petukhov.sto_dorog.services.NewsItemService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/news")
 public class NewsItemController {
+    private String sortMethod = "ASC";
     private final NewsItemService newsItemService;
 
     public NewsItemController(NewsItemService newsItemService) {
@@ -17,14 +23,15 @@ public class NewsItemController {
     }
 
     @GetMapping
-    public String findAllNews(Model model){
-        model.addAttribute("news", newsItemService.findAll());
+    public String findAllNews(Model model, @PageableDefault Pageable pageable) {
+        Page<NewsItem> page = sortNewsItem(pageable);
+        model.addAttribute("page", page);
         return "/news";
     }
 
     @GetMapping("/{id}")
-    public String findNewsItem(@PathVariable Long id, Model model){
-        if (!newsItemService.findNewsItem(id)){
+    public String findNewsItem(@PathVariable Long id, Model model) {
+        if (!newsItemService.findNewsItem(id)) {
             return "/news";
         }
         model.addAttribute("newsItem", newsItemService.findById(id));
@@ -33,20 +40,20 @@ public class NewsItemController {
     }
 
     @GetMapping("/add")
-    public String addNewsItem(Model model){
+    public String addNewsItem(Model model) {
         model.addAttribute("newsItem", new NewsItem());
         return "/addNewsItem";
     }
 
     @PostMapping
-    public String createNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto){
-        newsItemService.createNewsItem(newsItemDto);
+    public String createNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto, Principal principal) {
+        newsItemService.createNewsItem(newsItemDto, principal);
         return "redirect:/news";
     }
 
     @GetMapping("/{id}/edit")
-    public String editNewsItem(Model model, @PathVariable Long id){
-        if (!newsItemService.findNewsItem(id)){
+    public String editNewsItem(Model model, @PathVariable Long id) {
+        if (!newsItemService.findNewsItem(id)) {
             return "/news";
         }
         model.addAttribute("newsItem", newsItemService.findById(id));
@@ -54,14 +61,37 @@ public class NewsItemController {
     }
 
     @PatchMapping("/{id}")
-    public String updateNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto, @PathVariable Long id){
+    public String updateNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto, @PathVariable Long id) {
         newsItemService.updateNewsItem(newsItemDto, id);
         return "redirect:/news";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteNewsItem(@PathVariable Long id){
+    public String deleteNewsItem(@PathVariable Long id) {
         newsItemService.deleteNewsItem(id);
         return "redirect:/news";
+    }
+
+    @PostMapping("/{sorted}")
+    public String getSortMethod(@PathVariable("sorted") String sorted) {
+        sortMethod = sorted;
+        return "redirect:/news";
+    }
+
+    public Page<NewsItem> sortNewsItem(Pageable pageable) {
+        Page<NewsItem> newsItems = null;
+
+        switch (sortMethod) {
+            case "ASC":
+                newsItems = newsItemService.getOldNews(pageable);
+                break;
+            case "DESC":
+                newsItems = newsItemService.getRecentNews(pageable);
+                break;
+            default:
+                newsItems = newsItemService.getNews(pageable);
+                break;
+        }
+        return newsItems;
     }
 }

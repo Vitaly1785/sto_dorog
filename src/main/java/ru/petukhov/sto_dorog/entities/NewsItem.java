@@ -22,5 +22,8 @@ public class NewsItem {
     private int views;
     private LocalDateTime time;
     private String str;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
 
 }
