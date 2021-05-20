@@ -10,9 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/news/add").hasAnyRole("SUPER-ADMIN", "USER", "ADMIN")
                 .antMatchers("/persons/admin-panel").hasAnyRole("SUPER-ADMIN", "ADMIN")
                 .antMatchers("/**").permitAll()
