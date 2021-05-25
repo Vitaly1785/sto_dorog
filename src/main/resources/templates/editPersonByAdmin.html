@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Пользователь</title>
+    <title>Редактировать профиль</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -13,19 +13,21 @@
 <header th:insert="fragments/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Регистрация</h1>
-    <form th:method="POST" th:action="@{/persons}" th:object="${newPerson}">
-        <input type="text" th:field="*{firstName}" placeholder="Имя" class="form-control">
+    <h1>Редактировать профиль</h1>
+    <form th:method="PATCH" th:action="@{/admin-panel/{login}(login=${editPerson.getLogin()})}" th:object="${editPerson}">
+        <input type="text" th:field="*{firstName}" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstNameError</div><br>
-        <input type="text" th:field ="*{lastName}" placeholder="Фамилия" class="form-control">
+        <input type="text" th:field ="*{lastName}" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastNameError</div><br>
-        <input type="text" th:field="*{login}" placeholder="Введите логин" class="form-control">
-        <div class="text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">loginError</div><br>
-        <input type="text" th:field="*{password}" placeholder="Введите пароль" class="form-control">
+        <input type="text" th:field="*{password}" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">passwordError</div><br>
-        <input type="text" th:field="*{email}" placeholder="Введите email" class="form-control">
+        <input type="text" th:field="*{email}" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">emailError</div><br>
-        <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+                <div sec:authorize="hasRole('SUPER-ADMIN')">
+                    <input type="text" th:field="*{role}" class="form-control">
+                    <div class="text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">roleError</div><br>
+                </div>
+        <button type="submit" class="btn btn-success">Изменить профиль</button>
     </form>
 </div>
 <footer th:insert="fragments/footer :: footer"></footer>

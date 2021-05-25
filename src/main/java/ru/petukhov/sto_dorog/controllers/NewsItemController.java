@@ -5,11 +5,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.petukhov.sto_dorog.dto.NewsItemDto;
 import ru.petukhov.sto_dorog.entities.NewsItem;
 import ru.petukhov.sto_dorog.services.NewsItemService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -30,7 +32,7 @@ public class NewsItemController {
     }
 
     @GetMapping("/{id}")
-    public String findNewsItem(@PathVariable Long id, Model model) {
+    public String findNewsItem(@PathVariable("id") Long id, Model model) {
         if (!newsItemService.findNewsItem(id)) {
             return "/news";
         }
@@ -46,13 +48,17 @@ public class NewsItemController {
     }
 
     @PostMapping
-    public String createNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto, Principal principal) {
+    public String createNewsItem(@ModelAttribute("newsItem") @Valid NewsItemDto newsItemDto,
+                                 BindingResult result, Principal principal) {
+        if (result.hasErrors()){
+            return "/addNewsItem";
+        }
         newsItemService.createNewsItem(newsItemDto, principal);
         return "redirect:/news";
     }
 
     @GetMapping("/{id}/edit")
-    public String editNewsItem(Model model, @PathVariable Long id) {
+    public String editNewsItem(Model model, @PathVariable("id") Long id) {
         if (!newsItemService.findNewsItem(id)) {
             return "/news";
         }
@@ -61,13 +67,17 @@ public class NewsItemController {
     }
 
     @PatchMapping("/{id}")
-    public String updateNewsItem(@ModelAttribute("newsItem") NewsItemDto newsItemDto, @PathVariable Long id) {
+    public String updateNewsItem(@PathVariable("id") Long id, @ModelAttribute("newsItem") @Valid NewsItemDto newsItemDto,
+                                 BindingResult result) {
+        if (result.hasErrors()){
+            return "/editNewsItem";
+        }
         newsItemService.updateNewsItem(newsItemDto, id);
         return "redirect:/news";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteNewsItem(@PathVariable Long id) {
+    public String deleteNewsItem(@PathVariable("id") Long id) {
         newsItemService.deleteNewsItem(id);
         return "redirect:/news";
     }

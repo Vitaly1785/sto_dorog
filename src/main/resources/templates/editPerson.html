@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Редактировать профиль</title>
@@ -14,15 +14,19 @@
 
 <div class="container mt-5 mb-5">
     <h1>Редактировать профиль</h1>
-    <form th:method="PATCH" th:action="@{/persons/{id}(id=${editPerson.getId()})}" th:object="${editPerson}">
-        <input type="text" th:field="*{firstName}" class="form-control"><br>
-        <input type="text" th:field ="*{lastName}" class="form-control"><br>
-        <input type="text" th:field="*{login}" class="form-control"><br>
-        <input type="text" th:field="*{password}" class="form-control"><br>
-        <input type="text" th:field="*{email}" class="form-control"><br>
-        <div sec:authorize="hasRole('SUPER-ADMIN')">
-            <input type="text" th:field="*{role}" class="form-control">
-        </div>
+    <form th:method="PATCH" th:action="@{/persons/{login}(login=${editPerson.getLogin()})}" th:object="${editPerson}">
+        <input type="text" th:field="*{firstName}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstNameError</div><br>
+        <input type="text" th:field ="*{lastName}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastNameError</div><br>
+        <input type="text" th:field="*{password}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">passwordError</div><br>
+        <input type="text" th:field="*{email}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">emailError</div><br>
+<!--        <div sec:authorize="hasRole('SUPER-ADMIN')">-->
+<!--            <input type="text" th:field="*{role}" class="form-control">-->
+<!--            <div class="text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">roleError</div><br>-->
+<!--        </div>-->
         <button type="submit" class="btn btn-success">Изменить профиль</button>
     </form>
 </div>

@@ -2,12 +2,14 @@ package ru.petukhov.sto_dorog.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.petukhov.sto_dorog.dto.PersonDto;
+import ru.petukhov.sto_dorog.dto.UpdateByPersonDto;
 import ru.petukhov.sto_dorog.entities.Person;
 import ru.petukhov.sto_dorog.services.PersonService;
 
-
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/persons")
@@ -19,28 +21,17 @@ public class PersonsController {
         this.personService = personService;
     }
 
-    @GetMapping("/admin-panel")
-    public String showAllPersons(Model model){
-        model.addAttribute("persons", personService.findAll());
-        return "/personsAdmin";
-    }
     @GetMapping
     public String showPersons(Model model){
         model.addAttribute("persons", personService.findAll());
         return "/persons";
     }
 
-//    @GetMapping("/{id}")
-//    public String showPerson(@PathVariable Long id, Model model){
-//        model.addAttribute("person", personService.findById(id));
-//        return "/showPerson";
-//    }
     @GetMapping("/{login}")
     public String showPersonByLogin(Model model, @PathVariable String login){
         model.addAttribute("person", personService.findByLogin(login));
         return "/showPerson";
     }
-
 
     @GetMapping("/add")
     public String addPerson(Model model){
@@ -49,26 +40,35 @@ public class PersonsController {
     }
 
     @PostMapping
-    public String createPerson(@ModelAttribute("newPerson")PersonDto personDto){
+    public String createPerson(@ModelAttribute("newPerson") @Valid PersonDto personDto, BindingResult result){
+        if (result.hasErrors()){
+            return "/addPerson";
+        }
         personService.createPerson(personDto);
-        return "redirect:/news";
+        return "redirect:/persons";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editPerson(Model model, @PathVariable Long id){
-        model.addAttribute("editPerson", personService.findById(id));
+    @GetMapping("/{login}/edit")
+    public String editPerson(Model model, @PathVariable("login") String login){
+        model.addAttribute("editPerson", personService.findByLogin(login));
         return "/editPerson";
     }
 
-    @PatchMapping("/{id}")
-    public String updatePerson(@ModelAttribute("editPerson") PersonDto personDto, @PathVariable Long id){
-        personService.updatePerson(personDto, id);
-        return "redirect:/news";
+    @PatchMapping("/{login}")
+    public String updatePerson(@PathVariable("login") String login,
+                               @ModelAttribute("editPerson") @Valid UpdateByPersonDto personDto,
+                               BindingResult result){
+        if (result.hasErrors()){
+            return "/editPerson";
+        }
+        personService.updateByPerson(personDto, login);
+        return "redirect:/persons";
     }
 
-    @DeleteMapping("/{id}")
-    public String deletePerson(@PathVariable Long id){
-        personService.deletePerson(id);
+
+    @DeleteMapping("/{login}")
+    public String deletePerson(@PathVariable String login){
+        personService.deletePerson(login);
         return "redirect:/news";
     }
 

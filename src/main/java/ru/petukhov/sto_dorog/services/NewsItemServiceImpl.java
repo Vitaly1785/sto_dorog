@@ -10,7 +10,6 @@ import ru.petukhov.sto_dorog.exceptions.NewsItemNotFoundException;
 import ru.petukhov.sto_dorog.exceptions.PersonNotFoundException;
 import ru.petukhov.sto_dorog.repositories.NewsItemRepository;
 import ru.petukhov.sto_dorog.repositories.PersonRepository;
-
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;

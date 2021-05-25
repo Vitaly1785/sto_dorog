@@ -9,11 +9,9 @@ import java.time.LocalDateTime;
 @Table(name = "news")
 @Data
 public class NewsItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String anons;
     @Column(name = "full_text")
@@ -25,5 +23,4 @@ public class NewsItem {
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
-
 }

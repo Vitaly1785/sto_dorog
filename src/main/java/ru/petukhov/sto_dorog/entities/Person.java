@@ -21,5 +21,4 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
 }
