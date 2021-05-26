@@ -97,4 +97,10 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
             alter table news alter column full_text type varchar(5000);
         </sql>
     </changeSet>
+    <changeSet id="addTableComments" author="v.petukhov">
+        <sql>
+            create table comments (id serial, text varchar(510),
+            news_item_id BIGINT REFERENCES news (id), person_id BIGINT REFERENCES persons(id));
+        </sql>
+    </changeSet>
 </databaseChangeLog>

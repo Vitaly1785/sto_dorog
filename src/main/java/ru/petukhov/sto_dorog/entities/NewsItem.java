@@ -1,13 +1,18 @@
 package ru.petukhov.sto_dorog.entities;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "news")
-@Data
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
+@Setter
+@Getter
 public class NewsItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +28,8 @@ public class NewsItem {
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @OneToMany(mappedBy = "newsItem", orphanRemoval = true)
+    private List<Comment> comments;
+
 }

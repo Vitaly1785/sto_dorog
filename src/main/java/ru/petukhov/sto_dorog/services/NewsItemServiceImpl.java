@@ -52,12 +52,9 @@ public class NewsItemServiceImpl implements NewsItemService {
 
     @Override
     public NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id) {
-        NewsItem newsItem = findById(id);
-        newsItem.setTitle(newsItemDto.getTitle());
-        newsItem.setAnons(newsItemDto.getAnons());
-        newsItem.setFullText(newsItemDto.getFullText());
-        newsItem.setTime(LocalDateTime.now());
-        newsItem.setStr("Изменено: ");
+        NewsItem newsItem = findById(id).toBuilder().title(newsItemDto.getTitle())
+                .anons(newsItemDto.getAnons()).fullText(newsItemDto.getFullText())
+                .time(LocalDateTime.now()).str("Изменено: ").build();
         newsItemRepository.save(newsItem);
         return newsItem;
     }
