@@ -1,12 +1,17 @@
 package ru.petukhov.sto_dorog.entities;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "persons")
-@Data
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
+@Setter
+@Getter
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +27,6 @@ public class Person {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "person", orphanRemoval = true)
+    private List<NewsItem> newsItems;
 }

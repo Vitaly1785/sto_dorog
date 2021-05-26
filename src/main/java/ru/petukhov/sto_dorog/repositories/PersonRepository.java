@@ -6,5 +6,5 @@ import ru.petukhov.sto_dorog.entities.Person;
 import java.util.Optional;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
-        Optional<Person> findByLogin(String login);
+    Optional<Person> findByLogin(String login);
 }

@@ -24,9 +24,9 @@
         </tr>
         </thead>
         <tr th:each="person: ${persons}">
-            <td><a th:href="@{/persons/{id}(id=${person.getLogin()})}"
+            <td><a th:href="@{/admin-panel/{login}(login=${person.getLogin()})}"
                    th:text="${person.getFirstName()}">firstName</a>
-                <a th:href="@{/persons/{id}(id=${person.getLogin()})}"
+                <a th:href="@{/admin-panel/{id}(id=${person.getLogin()})}"
                    th:text="${person.getLastName()}">lastName</a>
             </td>
             <td th:text="${person.getEmail()}">email</td>

@@ -15,9 +15,12 @@
 <div class="container mt-5 mb-5">
     <h1>Редактировать новость</h1>
     <form th:method="PATCH" th:action="@{/news/{id}(id=${newsItem.getId()})}" th:object="${newsItem}">
-        <input type="text" th:field="*{title}" class="form-control"><br>
-        <input type="text" th:field ="*{anons}" class="form-control"><br>
-        <textarea th:field="*{fullText}" class="form-control"></textarea><br>
+        <input type="text" th:field="*{title}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">titleError</div><br>
+        <input type="text" th:field ="*{anons}" class="form-control">
+        <div class="text-danger" th:if="${#fields.hasErrors('anons')}" th:errors="*{anons}">anonsError</div><br>
+        <textarea th:field="*{fullText}" class="form-control"></textarea>
+        <div class="text-danger" th:if="${#fields.hasErrors('fullText')}" th:errors="*{fullText}">fullTextError</div><br>
         <button type="submit" class="btn btn-success">Изменить новость</button>
     </form>
 </div>

@@ -23,10 +23,10 @@
         <p><b>Email: </b><span th:text="${person.email}"/></p>
         <p><b>Логин: </b><span th:text="${person.login}"/></p>
         <div sec:authorise="isAuthentication()">
-            <div th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin' or #authentication.name == person.login}">
-                <a th:href="@{/persons/{login}/edit(login=${person.getLogin()})}"
+            <div sec:authorize="hasAnyRole('SUPER-ADMIN', 'ADMIN')">
+                <a th:href="@{/admin-panel/{login}/edit(login=${person.getLogin()})}"
                    class="btn btn-warning">Редактировать</a><br><br>
-                <form th:method="DELETE" th:action="@{/persons/{login}(login=${person.getLogin()})}">
+                <form th:method="DELETE" th:action="@{/admin-panel/{login}(login=${person.getLogin()})}">
                     <input class="btn btn-danger" type="submit" value="Удалить">
                 </form>
             </div>
