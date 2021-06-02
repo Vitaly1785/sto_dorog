@@ -25,6 +25,9 @@
         <div th:if="${newsItem.person}">
             <p th:text="${newsItem.person.login}"></p>
         </div>
+        <div>
+            <a th:href="@{{id}/comments(id=${newsItem.id})}">комментарии</a>
+        </div>
 
         <div sec:authorize="isAuthenticated()"
              th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin'}">

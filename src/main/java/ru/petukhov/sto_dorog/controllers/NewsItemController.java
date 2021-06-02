@@ -89,8 +89,9 @@ public class NewsItemController {
         return "redirect:/news";
     }
 
+
     public Page<NewsItem> sortNewsItem(Pageable pageable) {
-        Page<NewsItem> newsItems = null;
+        Page<NewsItem> newsItems;
 
         switch (sortMethod) {
             case "ASC":
