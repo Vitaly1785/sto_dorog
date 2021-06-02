@@ -103,4 +103,14 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
             news_item_id BIGINT REFERENCES news (id), person_id BIGINT REFERENCES persons(id));
         </sql>
     </changeSet>
+    <changeSet id="addPrimaryKeyTableComments" author="v.petukhov">
+        <sql>
+            alter table comments add primary key(id);
+        </sql>
+    </changeSet>
+    <changeSet id="addColumnTimeToComments" author="v.petukhov">
+        <addColumn tableName="comments">
+            <column defaultValueComputed="NOW()" name="time" type="DATETIME WITH TIMEZONE(19)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

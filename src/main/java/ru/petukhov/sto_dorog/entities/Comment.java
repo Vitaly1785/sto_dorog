@@ -3,6 +3,7 @@ package ru.petukhov.sto_dorog.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -14,6 +15,8 @@ public class Comment {
     private Long id;
 
     private String text;
+
+    private LocalDateTime time;
 
     @ManyToOne
     @JoinColumn(name = "news_item_id")
