@@ -20,13 +20,13 @@
             Сортировать по дате
         </button>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-            <li><form th:method="POST" th:action="@{/comments/{sorted}(sorted=${'ASC'})}">
+            <li><form th:method="POST" th:action="'/news/' + ${newsItem.id} + '/comments/' + ${'ASC'} ">
                 <input class="dropdown-item" type="submit" value="Первые">
             </form></li>
-            <li><form th:method="POST" th:action="@{/comments/{sorted}(sorted=${'DESC'})}">
+            <li><form th:method="POST" th:action="'/news/' + ${newsItem.id} + '/comments/' + ${'DESC'} ">
                 <input class="dropdown-item" type="submit" value="Последние">
             </form></li>
-            <li><form th:method="POST" th:action="@{/comments/{sorted}(sorted=${'None'})}">
+            <li><form th:method="POST" th:action="'/news/' + ${newsItem.id} + '/comments/' + ${'None'} ">
                 <input class="dropdown-item" type="submit" value="Без сортировки">
             </form></li>
         </ul>
@@ -34,10 +34,24 @@
 
     <a class="nav-link active" aria-current="page" th:href="'/news/' + ${newsItem.id} + '/comments/add'">Добавить комментарий</a>
 
-    <div th:each="comment : ${comments}" class="alert alert-info mt-2">
+    <div th:each="comment : ${page}" class="alert alert-info mt-2">
         <h3 th:text="${comment.person.login}"/>
         <p th:text="${comment.text}"/>
         <p th:text="${#temporals.format(comment.time, 'dd-MM-yyyy HH:mm')}"/>
+    </div>
+    <div class="pagination">
+    <span class="page-link" th:if="${page.hasPrevious()}">
+        <a th:href="@{/news/{id}/comments/(id=${newsItem.id},page=${page.number-1},size=${page.size})}" aria-disabled="true">Previous</a>
+    </span>
+        <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+            <span th:if="${page.number == i}" class="page-link">[[${i}+1]]</span>
+            <span class="page-link" th:unless="${page.number == i}">
+             <a th:href="@{/news/{id}/comments/(id=${newsItem.id},page=${i},size=${page.size})}">[[${i}+1]]</a>
+        </span>
+        </th:block>
+        <span class="page-link" th:if="${page.hasNext()}">
+        <a th:href="@{/news/{id}/comments/(id=${newsItem.id},page=${page.number+1},size=${page.size})}">Next</a>
+    </span>
     </div>
 </div>
 <footer th:insert="fragments/footer :: footer"></footer>

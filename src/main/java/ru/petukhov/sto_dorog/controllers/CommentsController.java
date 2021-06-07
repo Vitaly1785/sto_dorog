@@ -32,9 +32,9 @@ public class CommentsController {
     @GetMapping
     public String showComments(@PathVariable Long id, Model model, @PageableDefault Pageable pageable){
         NewsItem newsItem = newsItemService.findById(id);
-        Page<Comment> comments = sortComment(newsItem, pageable);
+        Page<Comment> comments = sortComment(id, pageable);
         model.addAttribute("newsItem", newsItem);
-        model.addAttribute("comments", comments);
+        model.addAttribute("page", comments);
         return "/comments";
     }
 
@@ -60,18 +60,18 @@ public class CommentsController {
         sortMethod = sorted;
         return "redirect:/news/{id}/comments";
     }
-    public Page<Comment> sortComment(NewsItem newsItem, Pageable pageable) {
+    public Page<Comment> sortComment(Long postId, Pageable pageable) {
         Page<Comment> comments;
 
         switch (sortMethod) {
             case "ASC":
-                comments = commentService.findOldComments(newsItem, pageable);
+                comments = commentService.findOldComments(newsItemService.findById(postId), pageable);
                 break;
             case "DESC":
-                comments = commentService.findRecentComment(newsItem, pageable);
+                comments = commentService.findRecentComment(newsItemService.findById(postId), pageable);
                 break;
             default:
-                comments = commentService.findAllComments(newsItem, pageable);
+                comments = commentService.findAllComments(newsItemService.findById(postId), pageable);
                 break;
         }
         return comments;

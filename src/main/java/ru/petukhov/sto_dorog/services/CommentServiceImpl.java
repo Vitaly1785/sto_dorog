@@ -14,6 +14,7 @@ import ru.petukhov.sto_dorog.repositories.NewsItemRepository;
 import ru.petukhov.sto_dorog.repositories.PersonRepository;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -48,6 +49,7 @@ public class CommentServiceImpl implements CommentService{
         comment.setNewsItem(newsItemRepository.findById(id)
                 .orElseThrow(()-> new NewsItemNotFoundException("NewsItem Not Found")));
         comment.setText(commentDto.getText());
+        comment.setTime(LocalDateTime.now());
         commentRepository.save(comment);
         return comment;
     }
