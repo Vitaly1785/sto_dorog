@@ -1,0 +1,28 @@
+{
+  "properties": [
+    {
+      "name": "spring.amazonProperties",
+      "type": "java.lang.String",
+      "description": "Description for spring.amazonProperties."
+    },
+    {
+      "name": "spring.amazonProperties.bucketName",
+      "type": "java.lang.String",
+      "description": "Description for spring.amazonProperties.bucketName."
+    },
+    {
+      "name": "spring.amazonProperties.endpointUrl",
+      "type": "java.lang.String",
+      "description": "Description for spring.amazonProperties.endpointUrl."
+    },
+    {
+      "name": "spring.amazonProperties.accessKey",
+      "type": "java.lang.String",
+      "description": "Description for spring.amazonProperties.accessKey."
+    },
+    {
+      "name": "spring.amazonProperties.secretKey",
+      "type": "java.lang.String",
+      "description": "Description for spring.amazonProperties.secretKey."
+    }
+  ] }

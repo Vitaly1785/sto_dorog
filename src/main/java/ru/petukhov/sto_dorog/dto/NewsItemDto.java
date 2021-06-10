@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.net.URL;
 
 
 @Data
@@ -18,4 +19,5 @@ public class NewsItemDto {
     @NotBlank(message = "Поле \"Текст\" должно быть заполнено.")
     @Size(max = 5000, message = "Введите не более 5000 символов.")
     private String fullText;
+    private String urlImage;
 }
