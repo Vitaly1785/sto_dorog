@@ -20,6 +20,8 @@ public class NewsItemServiceImpl implements NewsItemService {
     private final NewsItemRepository newsItemRepository;
     private final PersonRepository personRepository;
 
+
+
     public NewsItemServiceImpl(NewsItemRepository newsItemRepository, PersonRepository personRepository) {
         this.newsItemRepository = newsItemRepository;
         this.personRepository = personRepository;
