@@ -118,4 +118,23 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
             <column name="url_image" type="VARCHAR(1024)" />
         </addColumn>
     </changeSet>
+    <changeSet id="createTableImages" author="v.petukhov">
+        <createTable tableName="images">
+            <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(128)"/>
+            <column name="url" type="VARCHAR(512)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="dropColumnDateTime" author="v.petukhov">
+        <dropColumn tableName="images">
+            <column name="date_time"/>
+        </dropColumn>
+    </changeSet>
+    <changeSet id="addColumnDateTime" author="v.petukhov">
+        <addColumn tableName="images">
+            <column defaultValueComputed="NOW()" name="time" type="DATETIME WITH TIMEZONE(19)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

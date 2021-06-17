@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/news/add").authenticated()
+                .antMatchers("/photo/add").authenticated()
                 .antMatchers("/news/{id}/comments/add").authenticated()
                 .antMatchers("/persons/admin-panel").hasAnyRole("SUPER-ADMIN", "ADMIN")
                 .antMatchers("/**").permitAll()
@@ -31,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/authenticateTheUser").permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .csrf().disable();
 
     }
 }

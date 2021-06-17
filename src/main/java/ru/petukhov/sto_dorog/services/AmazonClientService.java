@@ -5,36 +5,40 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Objects;
 
 @Service
 public class AmazonClientService {
 
-    // AmazonS3 Client, in this object you have all AWS API calls about S3.
     private AmazonS3 amazonS3;
 
-    // Your bucket URL, this URL is https://{bucket-name}.s3-{region}.amazonaws.com/
-    // If you don't know if your URL is ok, send one file to your bucket using AWS and
-    // click on them, the file URL contains your bucket URL.
     @Value("${amazon.s3.endpoint}")
     private String url;
 
-    // Your bucket name.
+
     @Value("${amazon.s3.bucket-name}")
     private String bucketName;
 
-    // The IAM access key.
+
     @Value("${amazon.s3.access-key}")
     private String accessKey;
 
-    // The IAM secret key.
+
     @Value("${amazon.s3.secret-key}")
     private String secretKey;
 
-    // Getters for parents.
     protected AmazonS3 getClient() {
         return amazonS3;
     }
@@ -47,19 +51,52 @@ public class AmazonClientService {
         return bucketName;
     }
 
-    // This method are called after Spring starts AmazonClientService into your container.
+
     @PostConstruct
     private void init() {
 
-        // Init your AmazonS3 credentials using BasicAWSCredentials.
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-
-        // Start the client using AmazonS3ClientBuilder, here we goes to make a standard cliente, in the
-        // region SA_EAST_1, and the basic credentials.
         this.amazonS3 = AmazonS3ClientBuilder.standard()
                 .withRegion(Regions.US_EAST_2)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
+    }
+
+    public String uploadFile(MultipartFile multipartFile) {
+        String fileUrl = "";
+        try {
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = generateFileName(multipartFile);
+            fileUrl = url + fileName;
+            uploadFileTos3bucket(fileName, file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileUrl;
+    }
+
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
+
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+    }
+
+    private void uploadFileTos3bucket(String fileName, File file) {
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    public String deleteFileFromS3Bucket(String fileUrl) {
+        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        return "Successfully deleted";
     }
 
 }

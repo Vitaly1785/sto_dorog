@@ -3,7 +3,6 @@ package ru.petukhov.sto_dorog.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.dto.NewsItemDto;
 import ru.petukhov.sto_dorog.entities.NewsItem;
 import ru.petukhov.sto_dorog.entities.Person;
