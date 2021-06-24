@@ -14,7 +14,8 @@
 
 <div class="container mt-5 mb-5">
     <h1>Добавить новость</h1>
-    <form th:method="POST" th:action="@{/news}" th:object="${newsItem}">
+    <form th:method="POST" th:action="@{/news}" th:object="${newsItem}" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control"><br>
         <input type="text" th:field="*{title}" placeholder="Введите заголовок новости" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">titleError</div><br>
         <input type="text" th:field ="*{anons}" placeholder="Введите анонс новости" class="form-control">

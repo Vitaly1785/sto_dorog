@@ -17,12 +17,14 @@
 <div class="container mt-5">
 
     <div class="alert alert-info mt-2">
+        <img th:if="${newsItem.urlImage}" th:src="${newsItem.getUrlImage()}" class="bd-placeholder-img card-img-top" alt="photo"/><br>
         <h1 th:text="${newsItem.title}"></h1>
         <p th:text="${newsItem.fullText}"></p>
         <p><b>Просмотры: </b><span th:text="${newsItem.views}"/></p>
         <p><b th:text="${newsItem.str}"></b><span th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}"/>
-        </p>
-        <div th:if="${newsItem.person}">
+            </p>
+        <div th:if="${newsItem.person}" class="d-flex text-muted pt-3">
+            <img th:if="${newsItem.person.urlPhoto}" th:src="${newsItem.person.urlPhoto}" class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" alt="photo"/>
             <p th:text="${newsItem.person.login}"></p>
         </div>
         <div>
@@ -30,8 +32,8 @@
         </div>
 
         <div sec:authorize="isAuthenticated()"
-             th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin'}">
-            <a th:href="@{/news/{id}/edit(id=${newsItem.getId()})}" class="btn btn-warning">Редактировать</a><br><br>
+             th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin'}" class="btn-group">
+            <a th:href="@{/news/{id}/edit(id=${newsItem.getId()})}" class="btn btn-warning">Редактировать</a>
             <form th:method="DELETE" th:action="@{/news/{id}(id=${newsItem.getId()})}">
                 <input class="btn btn-danger" type="submit" value="Удалить">
             </form>

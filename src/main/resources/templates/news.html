@@ -36,10 +36,21 @@
     <a class="nav-link active" aria-current="page" href="/news/add">Добавить новость</a>
 
     <div th:each="newsItem : ${page}" class="alert alert-info mt-2">
-        <h3 th:text="${newsItem.title}"/>
-        <p th:text="${newsItem.anons}"/>
-        <p th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}"/>
-        <a th:href="'/news/' + ${newsItem.id}" class="btn btn-warning">Подробнее</a>
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col-auto d-none d-lg-block">
+            <img th:if="${newsItem.urlImage}" th:src="${newsItem.getUrlImage()}" class="bd-placeholder-img" width="250" height="250" alt="photo"/>
+        </div>
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary" th:text="${newsItem.title}"></strong>
+            <h3 class="mb-0" th:text="${newsItem.anons}"></h3><br>
+            <div class="mb-1 text-muted"
+                 th:text="${#temporals.format(newsItem.time, 'dd-MM-yyyy HH:mm')}">
+            </div>
+            <div>
+                <a th:href="'/news/' + ${newsItem.id}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+            </div>
+        </div>
+        </div>
     </div>
     <div class="pagination">
     <span class="page-link" th:if="${page.hasPrevious()}">

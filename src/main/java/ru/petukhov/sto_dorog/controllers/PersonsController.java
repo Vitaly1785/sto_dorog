@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.dto.PersonDto;
 import ru.petukhov.sto_dorog.dto.UpdateByPersonDto;
 import ru.petukhov.sto_dorog.entities.Person;
@@ -40,11 +41,12 @@ public class PersonsController {
     }
 
     @PostMapping
-    public String createPerson(@ModelAttribute("newPerson") @Valid PersonDto personDto, BindingResult result){
+    public String createPerson(@ModelAttribute("newPerson") @Valid PersonDto personDto, BindingResult result,
+                               @RequestParam("file") MultipartFile multipartFile){
         if (result.hasErrors()){
             return "/addPerson";
         }
-        personService.createPerson(personDto);
+        personService.createPerson(personDto, multipartFile);
         return "redirect:/persons";
     }
 
@@ -57,11 +59,11 @@ public class PersonsController {
     @PatchMapping("/{login}")
     public String updatePerson(@PathVariable("login") String login,
                                @ModelAttribute("editPerson") @Valid UpdateByPersonDto personDto,
-                               BindingResult result){
+                               BindingResult result, @RequestParam("file") MultipartFile multipartFile){
         if (result.hasErrors()){
             return "/editPerson";
         }
-        personService.updateByPerson(personDto, login);
+        personService.updateByPerson(personDto, login, multipartFile);
         return "redirect:/persons";
     }
 

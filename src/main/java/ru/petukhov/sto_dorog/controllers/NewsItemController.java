@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.dto.NewsItemDto;
 import ru.petukhov.sto_dorog.entities.NewsItem;
 import ru.petukhov.sto_dorog.services.NewsItemService;
@@ -50,11 +51,11 @@ public class NewsItemController {
 
     @PostMapping
     public String createNewsItem(@ModelAttribute("newsItem") @Valid NewsItemDto newsItemDto,
-                                 BindingResult result, Principal principal) {
+                                 BindingResult result, Principal principal, @RequestParam(value = "file") MultipartFile file) {
         if (result.hasErrors()){
             return "/addNewsItem";
         }
-        newsItemService.createNewsItem(newsItemDto, principal);
+        newsItemService.createNewsItem(newsItemDto, principal, file);
         return "redirect:/news";
     }
 
@@ -69,11 +70,11 @@ public class NewsItemController {
 
     @PatchMapping("/{id}")
     public String updateNewsItem(@PathVariable("id") Long id, @ModelAttribute("newsItem") @Valid NewsItemDto newsItemDto,
-                                 BindingResult result) {
+                                 BindingResult result, @RequestParam("file") MultipartFile multipartFile) {
         if (result.hasErrors()){
             return "/editNewsItem";
         }
-        newsItemService.updateNewsItem(newsItemDto, id);
+        newsItemService.updateNewsItem(newsItemDto, id, multipartFile);
         return "redirect:/news";
     }
 

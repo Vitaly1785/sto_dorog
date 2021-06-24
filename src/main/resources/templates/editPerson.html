@@ -14,7 +14,8 @@
 
 <div class="container mt-5 mb-5">
     <h1>Редактировать профиль</h1>
-    <form th:method="PATCH" th:action="@{/persons/{login}(login=${editPerson.getLogin()})}" th:object="${editPerson}">
+    <form th:method="PATCH" th:action="@{/persons/{login}(login=${editPerson.getLogin()})}" th:object="${editPerson}" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control"><br>
         <input type="text" th:field="*{firstName}" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstNameError</div><br>
         <input type="text" th:field ="*{lastName}" class="form-control">

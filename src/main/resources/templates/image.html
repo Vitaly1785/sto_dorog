@@ -26,12 +26,14 @@
                         <p class="card-text" th:text="${image.title}"></p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Смотреть</button>
-                                <form th:method="DELETE" th:action="@{/photo/{id}(id=${image.getId()})}">
-                                    <input class="btn btn-danger" type="submit" value="Удалить">
-                                </form>
+                                <div sec:authorize="isAuthenticated()"
+                                     th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin'}">
+                                    <form th:method="DELETE" th:action="@{/photo/{id}(id=${image.getId()})}">
+                                        <input class="btn btn-danger" type="submit" value="Удалить">
+                                    </form>
+                                </div>
                             </div>
-                            <small class="text-muted">9 mins</small>
+                            <small class="text-muted" th:text="${#temporals.format(image.time, 'dd-MM-yyyy HH:mm')}"></small>
                         </div>
                     </div>
                 </div>

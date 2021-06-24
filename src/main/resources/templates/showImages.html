@@ -26,16 +26,22 @@
 
                            <div class="d-flex justify-content-between mb-3">
                                <p class="card-text" th:text="${image.title}"></p>
-                               <p th:if="${image.person}" th:text="${image.person.login}"></p>
+                               <div class="d-flex mb-3">
+                                   <img th:if="${image.person.urlPhoto}" th:src="${image.person.urlPhoto}" class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="24" height="24" alt="photo"/>
+                                   <p class="card-text" th:text="${image.person.login}"/>
+                               </div>
                            </div>
 
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Смотреть</button>
-                                <form th:method="DELETE" th:action="@{/photo/{id}(id=${image.getId()})}">
-                                    <input class="btn btn-danger" type="submit" value="Удалить">
-                                </form>
+                                <a th:href="@{/photo/{id}(id=${image.id})}" class="btn btn-sm btn-outline-secondary">Смотреть</a>
+                                <div sec:authorize="isAuthenticated()"
+                                     th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin'}">
+                                    <form th:method="DELETE" th:action="@{/photo/{id}(id=${image.getId()})}">
+                                        <input class="btn btn-danger" type="submit" value="Удалить">
+                                    </form>
+                                </div>
                             </div>
                             <small class="text-muted" th:text="${#temporals.format(image.time, 'dd-MM-yyyy HH:mm')}"></small>
                         </div>

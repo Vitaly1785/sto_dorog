@@ -18,12 +18,14 @@
     <table class="table table-dark table-striped">
         <thead>
         <tr>
+            <th style="width: 5%">Фото</th>
             <th style="width: 40%">Имя</th>
             <th style="width: 20%">Email</th>
             <th style="width: 20%">Роль</th>
         </tr>
         </thead>
         <tr th:each="person: ${persons}">
+            <td><img th:if="${person.urlPhoto}" th:src="${person.urlPhoto}" class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" alt="photo"/></td>
             <td><a th:href="@{/admin-panel/{login}(login=${person.getLogin()})}"
                    th:text="${person.getFirstName()}">firstName</a>
                 <a th:href="@{/admin-panel/{id}(id=${person.getLogin()})}"

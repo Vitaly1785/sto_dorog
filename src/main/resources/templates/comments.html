@@ -35,7 +35,10 @@
     <a class="nav-link active" aria-current="page" th:href="'/news/' + ${newsItem.id} + '/comments/add'">Добавить комментарий</a>
 
     <div th:each="comment : ${page}" class="alert alert-info mt-2">
-        <h3 th:text="${comment.person.login}"/>
+        <div class="d-flex text-muted pt-3">
+            <img th:if="${comment.person.urlPhoto}" th:src="${comment.person.urlPhoto}" class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" alt="photo"/>
+            <h3 th:text="${comment.person.login}"/>
+        </div>
         <p th:text="${comment.text}"/>
         <p th:text="${#temporals.format(comment.time, 'dd-MM-yyyy HH:mm')}"/>
     </div>

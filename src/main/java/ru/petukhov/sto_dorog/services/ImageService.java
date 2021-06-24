@@ -1,5 +1,6 @@
 package ru.petukhov.sto_dorog.services;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.entities.Person;
@@ -49,5 +50,8 @@ public class ImageService {
             amazonClientService.deleteFileFromS3Bucket(imageOptional.get().getUrl());
             imageRepo.delete(imageOptional.get());
         }
+    }
+    public UserImage getLatestUserImage(Pageable pageable){
+        return imageRepo.findAllByOrderByTimeDesc(pageable).stream().findFirst().orElseThrow(()-> new ImageNotFoundException("Image not found"));
     }
 }

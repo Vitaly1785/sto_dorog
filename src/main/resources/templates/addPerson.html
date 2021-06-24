@@ -14,7 +14,8 @@
 
 <div class="container mt-5 mb-5">
     <h1>Регистрация</h1>
-    <form th:method="POST" th:action="@{/persons}" th:object="${newPerson}">
+    <form th:method="POST" th:action="@{/persons}" th:object="${newPerson}" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control"><br>
         <input type="text" th:field="*{firstName}" placeholder="Имя" class="form-control">
         <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstNameError</div><br>
         <input type="text" th:field ="*{lastName}" placeholder="Фамилия" class="form-control">

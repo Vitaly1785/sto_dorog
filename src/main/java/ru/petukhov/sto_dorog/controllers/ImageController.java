@@ -40,7 +40,12 @@ public class ImageController {
 
 
     @PostMapping("/add")
-    public String createImage(@RequestParam(value = "title") String title, @RequestParam(value = "file") MultipartFile file, Principal principal){
+    public String createImage(@RequestParam(value = "title") String title,
+                              @RequestParam(value = "file") MultipartFile file,
+                             Principal principal){
+        if (file.isEmpty()){
+            return "/addImage";
+        }
         imageService.createImage(title, file, principal);
         return "redirect:/photo";
     }

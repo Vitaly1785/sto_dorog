@@ -13,9 +13,9 @@ public interface NewsItemService {
 
     NewsItem findById(Long id);
 
-    NewsItem createNewsItem(NewsItemDto newsItemDto, Principal principal);
+    NewsItem createNewsItem(NewsItemDto newsItemDto, Principal principal, MultipartFile multipartFile);
 
-    NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id);
+    NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id, MultipartFile multipartFile);
 
     void deleteNewsItem(Long id);
 
