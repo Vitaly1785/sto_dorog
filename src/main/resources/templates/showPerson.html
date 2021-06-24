@@ -17,18 +17,28 @@
 <div class="container mt-5">
     <br>
     <div class="card text-dark bg-info mb-3">
-        <p><b>ID: </b><span th:text="${person.id}"/></p>
-        <p><b>Имя: </b><span th:text="${person.firstName}"/></p>
-        <p><b>Фамилия: </b><span th:text="${person.lastName}"/></p>
-        <p><b>Email: </b><span th:text="${person.email}"/></p>
-        <p><b>Логин: </b><span th:text="${person.login}"/></p>
-        <div sec:authorise="isAuthentication()">
-            <div th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin' or #authentication.name == person.login}">
-                <a th:href="@{/persons/{login}/edit(login=${person.getLogin()})}"
-                   class="btn btn-warning">Редактировать</a><br><br>
-                <form th:method="DELETE" th:action="@{/persons/{login}(login=${person.getLogin()})}">
-                    <input class="btn btn-danger" type="submit" value="Удалить">
-                </form>
+        <div  class="alert alert-info mt-2">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col-auto d-none d-lg-block">
+                    <img th:if="${person.urlPhoto}" th:src="${person.urlPhoto}" class="bd-placeholder-img rounded-circle" width="200" height="200" alt="photo"/>
+                </div>
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Пользователь</strong>
+                    <p class="mb-1"><b>ID: </b><span th:text="${person.id}"/></p>
+                    <p class="mb-1"><b>Имя: </b><span th:text="${person.firstName}"/></p>
+                    <p class="mb-1"><b>Фамилия: </b><span th:text="${person.lastName}"/></p>
+                    <p class="mb-1"><b>Email: </b><span th:text="${person.email}"/></p>
+                    <p class="mb-1"><b>Логин: </b><span th:text="${person.login}"/></p>
+                    <div sec:authorise="isAuthentication()" class="btn-group">
+                        <div th:if="${#authentication.name == 'superadmin' or #authentication.name == 'admin' or #authentication.name == person.login}" class="btn-group">
+                            <a th:href="@{/persons/{login}/edit(login=${person.getLogin()})}"
+                               class="btn btn-warning">Редактировать</a>
+                            <form th:method="DELETE" th:action="@{/persons/{login}(login=${person.getLogin()})}">
+                                <input class="btn btn-danger" type="submit" value="Удалить">
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

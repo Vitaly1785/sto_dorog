@@ -32,4 +32,7 @@ public class NewsItem {
     @OneToMany(mappedBy = "newsItem", orphanRemoval = true)
     private List<Comment> comments;
 
+    @Column(name = "url_image")
+    private String urlImage;
+
 }

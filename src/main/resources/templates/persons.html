@@ -20,6 +20,7 @@
         <table class="table table-success table-striped">
             <thead>
             <tr>
+                <th>Фото</th>
                 <th>Имя</th>
                 <th>Фамилия</th>
                 <th>Логин</th>
@@ -27,6 +28,7 @@
             </tr>
             </thead>
             <tr th:each="person: ${persons}">
+                <td><img th:if="${person.urlPhoto}" th:src="${person.urlPhoto}" class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" alt="photo"/></td>
                 <td th:text="${person.firstName}">firstName</td>
                 <td th:text="${person.lastName}">lastName</td>
                 <td th:text="${person.login}">login</td>

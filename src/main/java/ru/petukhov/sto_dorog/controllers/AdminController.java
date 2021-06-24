@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.dto.PersonUpdateDto;
 import ru.petukhov.sto_dorog.services.PersonService;
 

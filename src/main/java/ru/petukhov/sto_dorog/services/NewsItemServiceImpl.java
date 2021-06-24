@@ -3,6 +3,7 @@ package ru.petukhov.sto_dorog.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.petukhov.sto_dorog.dto.NewsItemDto;
 import ru.petukhov.sto_dorog.entities.NewsItem;
 import ru.petukhov.sto_dorog.entities.Person;
@@ -19,12 +20,13 @@ import java.util.Optional;
 public class NewsItemServiceImpl implements NewsItemService {
     private final NewsItemRepository newsItemRepository;
     private final PersonRepository personRepository;
+    private final AmazonClientService amazonClientService;
 
 
-
-    public NewsItemServiceImpl(NewsItemRepository newsItemRepository, PersonRepository personRepository) {
+    public NewsItemServiceImpl(NewsItemRepository newsItemRepository, PersonRepository personRepository, AmazonClientService amazonClientService) {
         this.newsItemRepository = newsItemRepository;
         this.personRepository = personRepository;
+        this.amazonClientService = amazonClientService;
     }
 
     @Override
@@ -38,13 +40,14 @@ public class NewsItemServiceImpl implements NewsItemService {
     }
 
     @Override
-    public NewsItem createNewsItem(NewsItemDto newsItemDto, Principal principal) {
+    public NewsItem createNewsItem(NewsItemDto newsItemDto, Principal principal, MultipartFile multipartFile) {
         NewsItem newsItem = new NewsItem();
         Optional<Person> person = personRepository.findByLogin(principal.getName());
         newsItem.setTitle(newsItemDto.getTitle());
         newsItem.setAnons(newsItemDto.getAnons());
         newsItem.setFullText(newsItemDto.getFullText());
         newsItem.setTime(LocalDateTime.now());
+       newsItem.setUrlImage(getUrlImage(multipartFile));
         newsItem.setStr("Добавлено: ");
         if (person.isPresent())
             newsItem.setPerson(person.orElseThrow(() -> new PersonNotFoundException("Person not found")));
@@ -53,16 +56,17 @@ public class NewsItemServiceImpl implements NewsItemService {
     }
 
     @Override
-    public NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id) {
+    public NewsItem updateNewsItem(NewsItemDto newsItemDto, Long id, MultipartFile multipartFile) {
         NewsItem newsItem = findById(id).toBuilder().title(newsItemDto.getTitle())
                 .anons(newsItemDto.getAnons()).fullText(newsItemDto.getFullText())
-                .time(LocalDateTime.now()).str("Изменено: ").build();
+                .time(LocalDateTime.now()).str("Изменено: ").urlImage(getUrlImage(multipartFile)).build();
         newsItemRepository.save(newsItem);
         return newsItem;
     }
 
     @Override
     public void deleteNewsItem(Long id) {
+        amazonClientService.deleteFileFromS3Bucket(findById(id).getUrlImage());
         newsItemRepository.delete(findById(id));
     }
 
@@ -97,5 +101,13 @@ public class NewsItemServiceImpl implements NewsItemService {
     @Override
     public NewsItem getLatestNews(Pageable pageable) {
         return newsItemRepository.findAllByOrderByTimeDesc(pageable).stream().findFirst().orElseThrow(() -> new NewsItemNotFoundException("NewsItem with %s id not found"));
+    }
+
+    public String getUrlImage(MultipartFile multipartFile){
+        if (multipartFile.isEmpty()){
+            return "https://sch1290.mskobr.ru/files/1%20Foto/s1200.png";
+        } else{
+           return amazonClientService.uploadFile(multipartFile);
+        }
     }
 }

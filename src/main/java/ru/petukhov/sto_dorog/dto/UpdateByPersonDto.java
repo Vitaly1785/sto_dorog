@@ -18,4 +18,5 @@ public class UpdateByPersonDto {
     @Email(message = "Введите корректный адрес электронной почты")
     @NotEmpty(message = "Поле \"Email\" не заполнено")
     private String email;
+    private String login;
 }

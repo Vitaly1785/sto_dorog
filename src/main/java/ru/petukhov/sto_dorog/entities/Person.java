@@ -29,4 +29,7 @@ public class Person {
 
     @OneToMany(mappedBy = "person", orphanRemoval = true)
     private List<NewsItem> newsItems;
+
+    @Column(name = "url_photo")
+    private String urlPhoto;
 }

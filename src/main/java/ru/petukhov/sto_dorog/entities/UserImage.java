@@ -19,7 +19,7 @@ public class UserImage {
 
     private String title;
 
-    @NotNull
+    @NotNull(message = "Добавьте фото")
     private String url;
 
     @ManyToOne

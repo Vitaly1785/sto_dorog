@@ -137,4 +137,9 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
             <column defaultValueComputed="NOW()" name="time" type="DATETIME WITH TIMEZONE(19)"/>
         </addColumn>
     </changeSet>
+    <changeSet id="addColumnUrlPhotoToTablePersons" author="v.petukhov">
+        <addColumn tableName="persons">
+            <column name="url_photo" type="VARCHAR(512)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
